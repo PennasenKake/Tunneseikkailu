@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tunneseikkailu — tunnetaitopeli, jota pelataan yhdessä aikuisen ja lapsen kanssa.">
+<title>Tunneseikkailu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand__mark" id="brandMark"></div>
+      <div>
+        <div class="brand__title">Tunneseikkailu</div>
+        <div class="brand__sub">Peli tunteiden sanoittamiseen yhdessä</div>
+      </div>
+    </div>
+    <div class="stars" id="starCounter">
+      <svg viewBox="0 0 20 20" fill="#F2A900" stroke="#C98600" stroke-width="1"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg>
+      <span id="starCount">0</span>
+    </div>
+  </div>
+
+  <div class="board" id="board">
+
+    <!-- ============ START ============ -->
+    <section id="screen-start">
+      <div class="hero-row">
+        <div class="hero-mascot" id="heroMascot"></div>
+        <div class="hero-text">
+          <div class="kicker">Aikuiselle &amp; lapselle yhdessä</div>
+          <h1>Tervetuloa Tunneseikkailuun!</h1>
+        </div>
+      </div>
+      <p class="intro-lede" style="margin-top:14px;">Tämä on peli, jota pelataan yhdessä — yksi aikuinen ja yksi lapsi. Käytte läpi arjen tilanteita,
+        sanoitatte tunteita, arvaatte ilmeitä ja tutkitte, missä kohtaa kehoa tunteet asuvat. Ei kello, ei kilpailua —
+        vain yhdessä juttelua.</p>
+      <div class="rule-pill">
+        <svg viewBox="0 0 20 20" fill="#F2A900" stroke="#C98600" stroke-width="1"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg>
+        Ei oikeita eikä vääriä vastauksia
+      </div>
+
+      <div class="preview-row" id="previewRow"></div>
+
+      <div class="names">
+        <div class="field">
+          <label for="nameAdult">Aikuisen nimi</label>
+          <input type="text" id="nameAdult" placeholder="Aikuinen" maxlength="20">
+        </div>
+        <div class="field">
+          <label for="nameChild">Lapsen nimi</label>
+          <input type="text" id="nameChild" placeholder="Lapsi" maxlength="20">
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <div class="t-label">Laajempi tunnesanasto</div>
+          <div class="t-desc">Pois päältä: vain 7 perustunnetta. Päällä: mukana ~30 sanaa isommalle lapselle.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleAdvanced" checked>
+          <span class="track"></span>
+          <span class="knob"></span>
+        </label>
+      </div>
+
+      <details class="tips">
+        <summary>Vinkkejä aikuiselle ennen aloitusta</summary>
+        <ul>
+          <li>Kaikki tunteet ovat sallittuja — teot eivät aina. Tämä peli on turvallinen paikka tuntea mitä vain.</li>
+          <li>Anna lapsen johtaa tahtia. Yksikin läpikäyty tilanne on jo hyvä pelikerta.</li>
+          <li>Jaa rohkeasti myös omia tunteitasi — se opettaa lapselle, että aikuisetkin tuntevat kaikenlaista.</li>
+          <li>Jos jokin tilanne tuntuu lapsesta liian isolta tai raskaalta juuri nyt, siirtykää vain seuraavaan.</li>
+          <li>Tarkoitus ei ole löytää "oikeaa" tunnetta, vaan harjoitella sanoittamista ja kuuntelemista.</li>
+        </ul>
+      </details>
+
+      <div class="actions">
+        <button class="btn btn-primary btn-block" id="btnToMenu">Aloitetaan →</button>
+      </div>
+      <div class="actions center">
+        <a class="btn btn-ghost" href="https://claude.ai/artifact/Q9vXMiNneUoRAUmagbV7Cc" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.6A1.4 1.4 0 0 1 3.4 3.2H9a1.4 1.4 0 0 1 1.4 1.4v12.6A1.4 1.4 0 0 0 9 15.8H2z"/><path d="M18 4.6a1.4 1.4 0 0 0-1.4-1.4H11a1.4 1.4 0 0 0-1.4 1.4v12.6A1.4 1.4 0 0 1 11 15.8h7z"/></svg>
+          Tutustu tunnekortteihin ensin
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ MENU ============ -->
+    <section id="screen-menu" hidden>
+      <div class="screen-head">
+        <h2>Mitä pelataan?</h2>
+        <span class="turn-badge" id="menuGreeting"></span>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card" data-mode="situation">
+          <span class="mode-card__arrow">→</span>
+          <div class="mode-card__icon" id="modeIconSituation"></div>
+          <div class="mode-card__title">Tilannekortit</div>
+          <div class="mode-card__desc">Arjen tilanteita — mietitään yhdessä, mitä tunteita ne herättäisivät.</div>
+          <span class="mode-card__meta">33 tilannetta</span>
+        </button>
+        <button class="mode-card" data-mode="charades">
+          <span class="mode-card__arrow">→</span>
+          <div class="mode-card__icon" id="modeIconCharades"></div>
+          <div class="mode-card__title">Ilme- ja elenäytös</div>
+          <div class="mode-card__desc">Näytä tunne vain kasvoilla ja keholla — toinen arvaa, mikä se on.</div>
+          <span class="mode-card__meta">Vuorotellen, ei sanoja</span>
+        </button>
+        <button class="mode-card" data-mode="bodymap">
+          <span class="mode-card__arrow">→</span>
+          <div class="mode-card__icon" id="modeIconBodymap"></div>
+          <div class="mode-card__title">Kehokartta</div>
+          <div class="mode-card__desc">Missä kohtaa kehoa tunne tuntuu? Tutkikaa yhdessä.</div>
+          <span class="mode-card__meta">Kosketa kehon kohtia</span>
+        </button>
+      </div>
+      <div class="actions center">
+        <button class="btn btn-ghost" id="btnToRecap">
+          <svg viewBox="0 0 20 20" fill="#F2A900" stroke="#C98600" stroke-width="1"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg>
+          Lopeta ja katso yhteenveto
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ SITUATION ============ -->
+    <section id="screen-situation" hidden>
+      <div class="screen-head">
+        <span class="turn-badge" id="situationTurn"></span>
+        <span class="progress-note" id="situationProgress"></span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="situationProgressFill"></div></div>
+      <span class="cat-chip" id="situationCat"></span>
+      <p class="scenario-text" id="situationText"></p>
+      <p class="scenario-hint">Lukekaa tilanne ääneen. Mitä tunteita se sinusta herättäisi? Voit valita useamman.</p>
+
+      <div class="chip-label">Miltä tässä voisi tuntua?</div>
+      <div class="chip-row" id="situationChips"></div>
+
+      <div class="reveal-box" id="situationFollowBox" hidden>
+        <h4>Juttelukysymys</h4>
+        <p id="situationFollowText"></p>
+      </div>
+      <div class="reveal-box adult-box" id="situationAdultBox" hidden>
+        <h4 id="situationAdultLabel">Aikuisen jakohetki</h4>
+        <p id="situationAdultText"></p>
+      </div>
+
+      <div class="actions between">
+        <button class="btn btn-ghost" id="btnSituationReveal">Näytä juttelukysymys</button>
+        <button class="btn btn-primary" id="btnSituationNext">Seuraava tilanne →</button>
+      </div>
+      <div class="actions center">
+        <button class="btn btn-ghost" id="btnSituationMenu">← Valikkoon</button>
+      </div>
+    </section>
+
+    <!-- ============ CHARADES ============ -->
+    <section id="screen-charades" hidden>
+      <div class="screen-head">
+        <span class="turn-badge" id="charadesTurn"></span>
+        <span class="progress-note" id="charadesProgress"></span>
+      </div>
+      <p class="charades-role" id="charadesRole"></p>
+
+      <div class="peek-card" id="charadesCard">
+        <div class="facedown" id="charadesFacedown">
+          <svg viewBox="0 0 100 100"><text x="50" y="68" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-weight="800" font-size="56" fill="#fff">?</text></svg>
+        </div>
+        <div class="eicon-big" id="charadesIcon" hidden></div>
+        <div class="peek-word" id="charadesWord" hidden></div>
+      </div>
+
+      <div class="actions center">
+        <button class="btn btn-soft" id="btnCharadesPeek">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          Vain näyttäjä: kurkista
+        </button>
+        <button class="btn btn-ghost" id="btnCharadesHide" hidden>Piilota taas</button>
+      </div>
+
+      <div class="reveal-box" id="charadesAnswerBox" hidden>
+        <h4>Oikea tunne oli</h4>
+        <p id="charadesAnswerText"></p>
+        <p id="charadesFollowText" style="margin-top:8px;"></p>
+      </div>
+
+      <div class="actions between">
+        <button class="btn btn-ghost" id="btnCharadesReveal">Paljasta vastaus</button>
+        <button class="btn btn-primary" id="btnCharadesNext">Seuraava näytös →</button>
+      </div>
+      <div class="actions center">
+        <button class="btn btn-ghost" id="btnCharadesMenu">← Valikkoon</button>
+      </div>
+    </section>
+
+    <!-- ============ BODYMAP ============ -->
+    <section id="screen-bodymap" hidden>
+      <div class="screen-head">
+        <h2>Kehokartta</h2>
+      </div>
+      <div class="chip-label">Mikä tunne otetaan tutkittavaksi?</div>
+      <div class="chip-row" id="bodymapChips"></div>
+
+      <div class="body-stage" id="bodymapStage" hidden>
+        <div class="body-figure" id="bodyFigure"></div>
+        <div class="zone-note">
+          <h4 id="zoneTitle">Napauta kehon kohtaa</h4>
+          <p id="zoneText">Missä kohtaa <span id="zoneEmotionWord">tämä tunne</span> voisi tuntua kehossa? Kokeilkaa yhdessä.</p>
+          <div class="zone-list" id="zoneList"></div>
+        </div>
+      </div>
+
+      <div class="actions between">
+        <button class="btn btn-primary" id="btnBodymapDone" hidden>Valmis, tallenna ja jatka →</button>
+        <span></span>
+      </div>
+      <div class="actions center">
+        <button class="btn btn-ghost" id="btnBodymapMenu">← Valikkoon</button>
+      </div>
+    </section>
+
+    <!-- ============ RECAP ============ -->
+    <section id="screen-recap" hidden>
+      <div class="recap-hero">
+        <div class="hero-mascot" id="recapMascot"></div>
+        <div class="kicker" style="justify-content:center;">Pelikerta päättyi</div>
+        <div class="recap-count" id="recapStars">0 tähteä</div>
+        <p class="intro-lede" style="margin:6px auto 0;text-align:center;" id="recapIntro"></p>
+      </div>
+
+      <div class="chip-label" style="text-align:center;">Tänään puhuimme näistä tunteista</div>
+      <div class="recap-grid" id="recapGrid"></div>
+
+      <div class="coping-card" id="copingCard">
+        <div class="coping-card__label">Kotiin vietävä vinkki</div>
+        <div class="coping-card__title" id="copingTitle"></div>
+        <p class="coping-card__text" id="copingText"></p>
+      </div>
+
+      <div class="actions center">
+        <button class="btn btn-primary" id="btnRecapAgain">Pelatkaa lisää →</button>
+        <button class="btn btn-ghost" id="btnRecapRestart">Aloita alusta</button>
+      </div>
+      <p class="footer-link">Haluatko laajemman tunnesanaston tueksi? Katso myös
+        <a href="https://claude.ai/artifact/Q9vXMiNneUoRAUmagbV7Cc" target="_blank" rel="noopener">Tunnekortit-sivu</a>.</p>
+    </section>
+
+  </div>
+
+  <footer class="page-footer">Tunneseikkailu · leikkimielinen tunnetaitopeli aikuiselle ja lapselle yhdessä</footer>
+</div>
+
+
+<script>
+const EMOTION_ICONS = {"ilo": {"label": "Ilo", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 32.5 48 Q 39 40 45.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 54.5 48 Q 61 40 67.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 32 61 Q 50 80 68 61\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  </g>\n  <ellipse cx=\"27\" cy=\"58\" rx=\"5.2\" ry=\"3.6\" fill=\"#F2A9A0\" opacity=\"0.85\"/><ellipse cx=\"73\" cy=\"58\" rx=\"5.2\" ry=\"3.6\" fill=\"#F2A9A0\" opacity=\"0.85\"/>\n</svg>"}, "suru": {"label": "Suru", "family": "suru", "familyName": "Suru", "accent": "#3D6EA5", "tint": "#B7D4F1", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#B7D4F1\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"3.8\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"3.8\" fill=\"#2B2A33\"/><path d=\"M 38 52 Q 34.5 59 38 62 Q 41.5 59 38 52 Z\" fill=\"#5B8DBE\"/><path d=\"M 33 75 Q 50 57 67 75\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "pelko": {"label": "Pelko", "family": "pelko", "familyName": "Pelko", "accent": "#6E54A6", "tint": "#CFC0EC", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFC0EC\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><ellipse cx=\"50\" cy=\"65\" rx=\"7\" ry=\"8.5\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\"/>\n  </g>\n  <path d=\"M 84 24 Q 79 33 84 39 Q 89 33 84 24 Z\" fill=\"#5FA9CE\" stroke=\"#3D8BB0\" stroke-width=\"0.8\"/>\n</svg>"}, "viha": {"label": "Viha", "family": "viha", "familyName": "Viha", "accent": "#D14B34", "tint": "#F5B8A4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#F5B8A4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 24 L 46 34\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 54 34 L 72 24\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 32.5 44.5 L 45.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 34.5 52.5 Q 39 50.5 44 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 67.5 44.5 L 54.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 65.5 52.5 Q 61 50.5 56 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 33 61 L 67 61 Q 67 68 50 69 Q 33 68 33 61 Z\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><line x1=\"41\" y1=\"61\" x2=\"41\" y2=\"67.3\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/><line x1=\"50\" y1=\"61\" x2=\"50\" y2=\"68.2\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/><line x1=\"59\" y1=\"61\" x2=\"59\" y2=\"67.3\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/>\n  </g>\n  <path d=\"M 12 26 Q 7 20.5 12 15.5 Q 16 11 12 6\" fill=\"none\" stroke=\"#9096A1\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n</svg>"}, "inho": {"label": "Inho", "family": "inho", "familyName": "Inho", "accent": "#3F8B57", "tint": "#B9E2C4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#B9E2C4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 30 22 L 47 34\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 53 34 L 70 22\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><line x1=\"47.5\" y1=\"31\" x2=\"52.5\" y2=\"31\" stroke=\"#2B2A33\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M 32.5 44.5 L 45.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 34.5 52.5 Q 39 50.5 44 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 67.5 44.5 L 54.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 65.5 52.5 Q 61 50.5 56 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 36 65 Q 41.5 59.5 47 65 T 58 65 T 64 65\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.2\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "yllatys": {"label": "Yllätys", "family": "yllatys", "familyName": "Yllätys", "accent": "#E07A1F", "tint": "#FACD8E", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FACD8E\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><ellipse cx=\"50\" cy=\"66\" rx=\"10.5\" ry=\"12\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.6\"/>\n  </g>\n  <line x1=\"86\" y1=\"14\" x2=\"86\" y2=\"29\" stroke=\"#2B2A33\" stroke-width=\"4.2\" stroke-linecap=\"round\"/><circle cx=\"86\" cy=\"35.5\" r=\"2.6\" fill=\"#2B2A33\"/>\n</svg>"}, "hapea": {"label": "Häpeä", "family": "sosiaaliset", "familyName": "Sosiaaliset ja moraaliset tunteet", "accent": "#2E9187", "tint": "#AFE0D8", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#AFE0D8\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 36 65 Q 41.5 59.5 47 65 T 58 65 T 64 65\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.2\" stroke-linecap=\"round\"/>\n  </g>\n  <ellipse cx=\"26\" cy=\"59\" rx=\"6.4\" ry=\"4.4\" fill=\"#EE8C86\" opacity=\"0.9\"/><ellipse cx=\"74\" cy=\"59\" rx=\"6.4\" ry=\"4.4\" fill=\"#EE8C86\" opacity=\"0.9\"/>\n</svg>"}, "onnellisuus": {"label": "Onnellisuus", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 32.5 48 Q 39 40 45.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 54.5 48 Q 61 40 67.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 39 62 Q 50 71 61 62\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "riemu": {"label": "Riemu", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><polygon points=\"39.0,42.0 40.2,45.3 43.8,45.5 41.0,47.6 41.9,51.0 39.0,49.1 36.1,51.0 37.0,47.6 34.2,45.5 37.8,45.3\" fill=\"#F2A900\" stroke=\"#2B2A33\" stroke-width=\"1\"/><polygon points=\"61.0,42.0 62.2,45.3 65.8,45.5 63.0,47.6 63.9,51.0 61.0,49.1 58.1,51.0 59.0,47.6 56.2,45.5 59.8,45.3\" fill=\"#F2A900\" stroke=\"#2B2A33\" stroke-width=\"1\"/><path d=\"M 31 59 Q 50 82 69 59 Q 50 69 31 59 Z\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\"/>\n  </g>\n  <path d=\"M 84 13 L 86.4 19 L 92.5 21.5 L 86.4 24 L 84 30 L 81.6 24 L 75.5 21.5 L 81.6 19 Z\" fill=\"#F2A900\" stroke=\"#C98600\" stroke-width=\"0.6\"/>\n</svg>"}, "ylpeys": {"label": "Ylpeys", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"34\" x2=\"43\" y2=\"34\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 27 Q 64 18 72 25\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"3.8\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"3.8\" fill=\"#2B2A33\"/><path d=\"M 39 66 Q 52 72 64 58\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 50 80 L 51.9 84.4 L 56.7 85 L 53.1 88.3 L 54.1 93 L 50 90.5 L 45.9 93 L 46.9 88.3 L 43.3 85 L 48.1 84.4 Z\" fill=\"#F2A900\" stroke=\"#2B2A33\" stroke-width=\"0.8\"/>\n</svg>"}, "kiitollisuus": {"label": "Kiitollisuus", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 32.5 48 Q 39 40 45.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 54.5 48 Q 61 40 67.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 39 62 Q 50 71 61 62\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 78 20 C 76 17, 71 18, 71 21.5 C 71 25, 78 29, 78 29 C 78 29, 85 25, 85 21.5 C 85 18, 80 17, 78 20 Z\" fill=\"#D14B34\"/>\n</svg>"}, "rakkaus": {"label": "Rakkaus", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 39 50.96 C 32.84 44.36, 37.24 39.96, 39 45.24 C 40.76 39.96, 45.16 44.36, 39 50.96 Z\" fill=\"#D14B34\"/><path d=\"M 61 50.96 C 54.84 44.36, 59.24 39.96, 61 45.24 C 62.76 39.96, 67.16 44.36, 61 50.96 Z\" fill=\"#D14B34\"/><path d=\"M 32 61 Q 50 80 68 61\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 50 12 C 46 6, 38 8, 38 14 C 38 20, 50 27, 50 27 C 50 27, 62 20, 62 14 C 62 8, 54 6, 50 12 Z\" fill=\"#D14B34\"/>\n</svg>"}, "helpotus": {"label": "Helpotus", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 32.5 48 Q 39 40 45.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 54.5 48 Q 61 40 67.5 48\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 39 62 Q 50 71 61 62\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 84 24 Q 79 33 84 39 Q 89 33 84 24 Z\" fill=\"#5FA9CE\" stroke=\"#3D8BB0\" stroke-width=\"0.8\"/>\n</svg>"}, "into": {"label": "Into", "family": "ilo", "familyName": "Ilo", "accent": "#F2A900", "tint": "#FFE29A", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FFE29A\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><path d=\"M 32 61 Q 50 80 68 61\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  </g>\n  <line x1=\"4\" y1=\"22\" x2=\"15\" y2=\"26\" stroke=\"#5D5B8D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><line x1=\"2\" y1=\"34\" x2=\"14\" y2=\"34\" stroke=\"#5D5B8D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><line x1=\"4\" y1=\"46\" x2=\"15\" y2=\"42\" stroke=\"#5D5B8D\" stroke-width=\"2.6\" stroke-linecap=\"round\"/>\n</svg>"}, "alakuloisuus": {"label": "Alakuloisuus", "family": "suru", "familyName": "Suru", "accent": "#3D6EA5", "tint": "#B7D4F1", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#B7D4F1\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 38 70 Q 50 62 62 70\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "ikava": {"label": "Ikävä", "family": "suru", "familyName": "Suru", "accent": "#3D6EA5", "tint": "#B7D4F1", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#B7D4F1\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"3.8\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"3.8\" fill=\"#2B2A33\"/><path d=\"M 38 52 Q 34.5 59 38 62 Q 41.5 59 38 52 Z\" fill=\"#5B8DBE\"/><path d=\"M 38 70 Q 50 62 62 70\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "yksinaisyys": {"label": "Yksinäisyys", "family": "suru", "familyName": "Suru", "accent": "#3D6EA5", "tint": "#B7D4F1", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#B7D4F1\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 38 70 Q 50 62 62 70\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "ahdistus": {"label": "Ahdistus", "family": "pelko", "familyName": "Pelko", "accent": "#6E54A6", "tint": "#CFC0EC", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFC0EC\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><path d=\"M 36 65 Q 41.5 59.5 47 65 T 58 65 T 64 65\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.2\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 84 24 Q 79 33 84 39 Q 89 33 84 24 Z\" fill=\"#5FA9CE\" stroke=\"#3D8BB0\" stroke-width=\"0.8\"/>\n</svg>"}, "huoli": {"label": "Huoli", "family": "pelko", "familyName": "Pelko", "accent": "#6E54A6", "tint": "#CFC0EC", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFC0EC\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 36 65 Q 41.5 59.5 47 65 T 58 65 T 64 65\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.2\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "jannitys": {"label": "Jännitys", "family": "pelko", "familyName": "Pelko", "accent": "#6E54A6", "tint": "#CFC0EC", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFC0EC\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><line x1=\"42\" y1=\"66\" x2=\"58\" y2=\"66\" stroke=\"#2B2A33\" stroke-width=\"4.6\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 84 24 Q 79 33 84 39 Q 89 33 84 24 Z\" fill=\"#5FA9CE\" stroke=\"#3D8BB0\" stroke-width=\"0.8\"/>\n</svg>"}, "artymys": {"label": "Ärtymys", "family": "viha", "familyName": "Viha", "accent": "#D14B34", "tint": "#F5B8A4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#F5B8A4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 24 L 46 34\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 54 34 L 72 24\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 32.5 44.5 L 45.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 34.5 52.5 Q 39 50.5 44 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 67.5 44.5 L 54.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 65.5 52.5 Q 61 50.5 56 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 38 70 Q 50 62 62 70\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "turhautuminen": {"label": "Turhautuminen", "family": "viha", "familyName": "Viha", "accent": "#D14B34", "tint": "#F5B8A4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#F5B8A4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 24 L 46 34\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 54 34 L 72 24\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 32.5 44.5 L 45.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 34.5 52.5 Q 39 50.5 44 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 67.5 44.5 L 54.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 65.5 52.5 Q 61 50.5 56 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 33 61 L 67 61 Q 67 68 50 69 Q 33 68 33 61 Z\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><line x1=\"41\" y1=\"61\" x2=\"41\" y2=\"67.3\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/><line x1=\"50\" y1=\"61\" x2=\"50\" y2=\"68.2\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/><line x1=\"59\" y1=\"61\" x2=\"59\" y2=\"67.3\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/>\n  </g>\n  <path d=\"M 12 26 Q 7 20.5 12 15.5 Q 16 11 12 6\" fill=\"none\" stroke=\"#9096A1\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n</svg>"}, "kateus": {"label": "Kateus", "family": "viha", "familyName": "Viha", "accent": "#D14B34", "tint": "#F5B8A4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#F5B8A4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 30 22 L 47 34\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 53 34 L 70 22\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><line x1=\"47.5\" y1=\"31\" x2=\"52.5\" y2=\"31\" stroke=\"#2B2A33\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M 32.5 44.5 L 45.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 34.5 52.5 Q 39 50.5 44 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 67.5 44.5 L 54.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 65.5 52.5 Q 61 50.5 56 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 38 70 Q 50 62 62 70\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  \n</svg>"}, "kiukku": {"label": "Kiukku", "family": "viha", "familyName": "Viha", "accent": "#D14B34", "tint": "#F5B8A4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#F5B8A4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 24 L 46 34\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 54 34 L 72 24\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"4.4\" stroke-linecap=\"round\"/><path d=\"M 32.5 44.5 L 45.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 34.5 52.5 Q 39 50.5 44 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M 67.5 44.5 L 54.5 50\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 65.5 52.5 Q 61 50.5 56 52.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2\" stroke-linecap=\"round\"/><ellipse cx=\"50\" cy=\"65\" rx=\"7\" ry=\"8.5\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\"/>\n  </g>\n  <path d=\"M 12 26 Q 7 20.5 12 15.5 Q 16 11 12 6\" fill=\"none\" stroke=\"#9096A1\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n</svg>"}, "kyllastyminen": {"label": "Kyllästyminen", "family": "inho", "familyName": "Inho", "accent": "#3F8B57", "tint": "#B9E2C4", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#B9E2C4\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><line x1=\"39\" y1=\"65\" x2=\"61\" y2=\"65\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <text x=\"76\" y=\"28\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"13\" fill=\"#5D5B8D\">z</text><text x=\"83\" y=\"20\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"10\" fill=\"#5D5B8D\">z</text><text x=\"88\" y=\"13\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"7\" fill=\"#5D5B8D\">z</text>\n</svg>"}, "hammastys": {"label": "Hämmästys", "family": "yllatys", "familyName": "Yllätys", "accent": "#E07A1F", "tint": "#FACD8E", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FACD8E\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 28 35 Q 36 24 44 31\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 31 Q 64 24 72 35\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><ellipse cx=\"50\" cy=\"65\" rx=\"7\" ry=\"8.5\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\"/>\n  </g>\n  \n</svg>"}, "hammennys": {"label": "Hämmennys", "family": "yllatys", "familyName": "Yllätys", "accent": "#E07A1F", "tint": "#FACD8E", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#FACD8E\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"34\" x2=\"43\" y2=\"34\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 27 Q 64 18 72 25\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 39 47 m -5.5 0 a 5.5 5.5 0 1 1 11 0 a 3.6 3.6 0 1 1 -7.2 0 a 2 2 0 1 1 4 0\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2.3\" stroke-linecap=\"round\"/><path d=\"M 61 47 m -5.5 0 a 5.5 5.5 0 1 1 11 0 a 3.6 3.6 0 1 1 -7.2 0 a 2 2 0 1 1 4 0\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"2.3\" stroke-linecap=\"round\"/><path d=\"M 36 65 Q 41.5 59.5 47 65 T 58 65 T 64 65\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.2\" stroke-linecap=\"round\"/>\n  </g>\n  <circle cx=\"85\" cy=\"22\" r=\"11\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/><text x=\"85\" y=\"27\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"15\" fill=\"#2B2A33\" text-anchor=\"middle\">?</text>\n</svg>"}, "syyllisyys": {"label": "Syyllisyys", "family": "sosiaaliset", "familyName": "Sosiaaliset ja moraaliset tunteet", "accent": "#2E9187", "tint": "#AFE0D8", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#AFE0D8\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 36 65 Q 41.5 59.5 47 65 T 58 65 T 64 65\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.2\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 71 58 Q 67 66 71 71 Q 75 66 71 58 Z\" fill=\"#5B8DBE\"/>\n</svg>"}, "nolous": {"label": "Nolous", "family": "sosiaaliset", "familyName": "Sosiaaliset ja moraaliset tunteet", "accent": "#2E9187", "tint": "#AFE0D8", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#AFE0D8\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 39 66 Q 52 72 64 58\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <ellipse cx=\"26\" cy=\"59\" rx=\"6.4\" ry=\"4.4\" fill=\"#EE8C86\" opacity=\"0.9\"/><ellipse cx=\"74\" cy=\"59\" rx=\"6.4\" ry=\"4.4\" fill=\"#EE8C86\" opacity=\"0.9\"/>\n</svg>"}, "empatia": {"label": "Empatia", "family": "sosiaaliset", "familyName": "Sosiaaliset ja moraaliset tunteet", "accent": "#2E9187", "tint": "#AFE0D8", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#AFE0D8\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <path d=\"M 29 33 Q 38 20 46 27\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 54 27 Q 62 20 71 33\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 39 62 Q 50 71 61 62\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <path d=\"M 78 20 C 76 17, 71 18, 71 21.5 C 71 25, 78 29, 78 29 C 78 29, 85 25, 85 21.5 C 85 18, 80 17, 78 20 Z\" fill=\"#D14B34\"/>\n</svg>"}, "uteliaisuus": {"label": "Uteliaisuus", "family": "monimutkaiset", "familyName": "Monimutkaiset ja sekoittuneet tunnetilat", "accent": "#5D5B8D", "tint": "#CFCCE7", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFCCE7\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"34\" x2=\"43\" y2=\"34\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 56 27 Q 64 18 72 25\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><circle cx=\"39\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"40.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><circle cx=\"61\" cy=\"47\" r=\"6.6\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"2.6\"/><circle cx=\"62.3\" cy=\"46.5\" r=\"3\" fill=\"#2B2A33\"/><ellipse cx=\"50\" cy=\"65\" rx=\"7\" ry=\"8.5\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"3.4\"/>\n  </g>\n  <circle cx=\"85\" cy=\"22\" r=\"11\" fill=\"#fff\" stroke=\"#2B2A33\" stroke-width=\"1.6\"/><text x=\"85\" y=\"27\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"15\" fill=\"#2B2A33\" text-anchor=\"middle\">?</text>\n</svg>"}, "tylsistyminen": {"label": "Tylsistyminen", "family": "monimutkaiset", "familyName": "Monimutkaiset ja sekoittuneet tunnetilat", "accent": "#5D5B8D", "tint": "#CFCCE7", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFCCE7\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><line x1=\"39\" y1=\"65\" x2=\"61\" y2=\"65\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <text x=\"76\" y=\"28\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"13\" fill=\"#5D5B8D\">z</text><text x=\"83\" y=\"20\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"10\" fill=\"#5D5B8D\">z</text><text x=\"88\" y=\"13\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"7\" fill=\"#5D5B8D\">z</text>\n</svg>"}, "uupumus": {"label": "Uupumus", "family": "monimutkaiset", "familyName": "Monimutkaiset ja sekoittuneet tunnetilat", "accent": "#5D5B8D", "tint": "#CFCCE7", "svg": "<svg viewBox=\"0 0 100 100\" width=\"100%\" height=\"100%\" role=\"img\" aria-hidden=\"true\">\n  <circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#CFCCE7\" stroke=\"#2B2A33\" stroke-width=\"3\"/>\n  <g transform=\"translate(50 50) scale(0.8235294117647058) translate(-50 -48)\">\n    <line x1=\"29\" y1=\"33\" x2=\"43\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><line x1=\"57\" y1=\"33\" x2=\"71\" y2=\"33\" stroke=\"#2B2A33\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><path d=\"M 33 45.5 Q 39 49.5 45 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 55 45.5 Q 61 49.5 67 45.5\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/><path d=\"M 38 70 Q 50 62 62 70\" fill=\"none\" stroke=\"#2B2A33\" stroke-width=\"3.4\" stroke-linecap=\"round\"/>\n  </g>\n  <text x=\"76\" y=\"28\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"13\" fill=\"#5D5B8D\">z</text><text x=\"83\" y=\"20\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"10\" fill=\"#5D5B8D\">z</text><text x=\"88\" y=\"13\" font-family=\"Baloo 2, sans-serif\" font-weight=\"700\" font-size=\"7\" fill=\"#5D5B8D\">z</text>\n</svg>"}};
+</script>
+<script src="script.js"></script>
+
+</body>
+</html>
